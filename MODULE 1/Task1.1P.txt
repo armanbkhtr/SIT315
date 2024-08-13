@@ -1,0 +1,24 @@
+const int sensorPin = 2;    // HC-SR505 output connected to digital pin 2
+const int ledPin = 13;      // Built-in LED on most Arduino boards
+
+void setup() {
+  pinMode(sensorPin, INPUT);    // Set the sensor pin as input
+  pinMode(ledPin, OUTPUT);      // Set the LED pin as output
+  digitalWrite(ledPin, LOW);    // Ensure the LED is off initially
+
+  Serial.begin(9600);           // Start the serial communication at 9600 baud rate
+  Serial.println("Program started."); // Print a message when the program starts
+}
+
+void loop() {
+  int sensorValue = digitalRead(sensorPin);  // Read the sensor value (HIGH or LOW)
+  
+  if (sensorValue == HIGH) {
+    digitalWrite(ledPin, HIGH);  // Turn the LED on when motion is detected
+    Serial.println("Motion detected!"); // Print a message when motion is detected
+  } else {
+    digitalWrite(ledPin, LOW);   // Turn the LED off when no motion is detected
+    Serial.println("No Motion detected!");
+  }
+  delay(10);
+}
