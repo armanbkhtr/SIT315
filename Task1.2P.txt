@@ -1,0 +1,44 @@
+const int interruptPin = 2; // Pin to which the interrupt is attached
+const int ledPin = 13; // Pin for the LED
+
+volatile bool objectDetected = false; // Variable to store interrupt state
+
+void setup() {
+// Initialize serial communication
+Serial.begin(9600);
+
+// Set up the LED pin as an output
+pinMode(ledPin, OUTPUT);
+
+// Set up the interrupt pin as input
+pinMode(interruptPin, INPUT_PULLUP); // Using internal pull-up resistor
+
+// Attach the interrupt to the pin
+// Trigger the interrupt on a RISING edge (when the pin goes from LOW to HIGH)
+attachInterrupt(digitalPinToInterrupt(interruptPin), handleInterrupt, RISING);
+}
+
+void loop() {
+// Check if objectDetected flag is set
+if (objectDetected) {
+// Print message and turn on the LED
+Serial.println("Object detected");
+digitalWrite(ledPin, HIGH);
+} else {
+// Print message and turn off the LED
+Serial.println("Object not detected");
+digitalWrite(ledPin, LOW);
+}
+
+// Reset the objectDetected flag
+objectDetected = false;
+
+// Add a small delay to avoid flooding the serial monitor
+delay(100);
+}
+
+// Interrupt Service Routine (ISR)
+void handleInterrupt() {
+// Set the flag to indicate an object has been detected
+objectDetected = true;
+}
